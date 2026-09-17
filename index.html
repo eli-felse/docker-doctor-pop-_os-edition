@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Doctor: Pop!_OS Edition</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1>🩺 Docker Doctor <span class="edition">Pop!_OS Edition</span></h1>
+    <p class="tagline">Paste the output of a few terminal commands and get an instant diagnosis of common Docker problems on Pop!_OS — plus the exact fix commands, ready to copy.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="summary" class="summary-bar" aria-live="polite">
+    <div class="summary-dot" id="summary-dot" aria-hidden="true"></div>
+    <div class="summary-text" id="summary-text">Run the checks below to see your Docker health.</div>
+    <button id="reset-btn" class="btn btn-ghost" type="button">Reset all</button>
+  </section>
+
+  <section class="checks" aria-label="Diagnostic checks">
+
+    <!-- Check 1: Docker daemon -->
+    <article class="card" id="card-daemon">
+      <div class="card-head">
+        <span class="status-badge" id="badge-daemon" data-status="unknown" aria-hidden="true"></span>
+        <h2>1. Docker daemon</h2>
+      </div>
+      <p class="card-desc">Is the Docker service actually running? This is the #1 cause of "Cannot connect to the Docker daemon" errors.</p>
+
+      <div class="step">
+        <label class="step-label" for="cmd-daemon">Run this, then paste the output below:</label>
+        <div class="cmd-row">
+          <code id="cmd-daemon">systemctl status docker --no-pager</code>
+          <button class="btn btn-copy" type="button" data-copy-target="cmd-daemon">Copy</button>
+        </div>
+      </div>
+
+      <div class="step">
+        <label for="paste-daemon">Paste output here:</label>
+        <textarea id="paste-daemon" rows="4" placeholder="● docker.service - Docker Application Container Engine&#10;   Active: active (running) since ..."></textarea>
+        <button class="btn btn-primary" type="button" data-check="daemon">Diagnose</button>
+      </div>
+
+      <div class="result" id="result-daemon" hidden></div>
+    </article>
+
+    <!-- Check 2: Kernel modules -->
+    <article class="card" id="card-modules">
+      <div class="card-head">
+        <span class="status-badge" id="badge-modules" data-status="unknown" aria-hidden="true"></span>
+        <h2>2. Kernel modules</h2>
+      </div>
+      <p class="card-desc">Docker needs <code>overlay</code> (storage driver) and <code>br_netfilter</code> (container networking) loaded in the kernel.</p>
+
+      <div class="step">
+        <label class="step-label" for="cmd-modules">Run this, then paste the output below:</label>
+        <div class="cmd-row">
+          <code id="cmd-modules">lsmod | grep -E 'overlay|br_netfilter'</code>
+          <button class="btn btn-copy" type="button" data-copy-target="cmd-modules">Copy</button>
+        </div>
+      </div>
+
+      <div class="step">
+        <label for="paste-modules">Paste output here (leave blank if nothing printed):</label>
+        <textarea id="paste-modules" rows="4" placeholder="overlay               176128  0&#10;br_netfilter           28672  0"></textarea>
+        <button class="btn btn-primary" type="button" data-check="modules">Diagnose</button>
+      </div>
+
+      <div class="result" id="result-modules" hidden></div>
+    </article>
+
+    <!-- Check 3: Docker context -->
+    <article class="card" id="card-context">
+      <div class="card-head">
+        <span class="status-badge" id="badge-context" data-status="unknown" aria-hidden="true"></span>
+        <h2>3. Docker context</h2>
+      </div>
+      <p class="card-desc">A leftover or misconfigured context (e.g. pointing at a dead remote endpoint) makes every <code>docker</code> command fail even when the daemon is fine.</p>
+
+      <div class="step">
+        <label class="step-label" for="cmd-context">Run this, then paste the output below:</label>
+        <div class="cmd-row">
+          <code id="cmd-context">docker context ls</code>
+          <button class="btn btn-copy" type="button" data-copy-target="cmd-context">Copy</button>
+        </div>
+      </div>
+
+      <div class="step">
+        <label for="paste-context">Paste output here:</label>
+        <textarea id="paste-context" rows="4" placeholder="NAME       DESCRIPTION            DOCKER ENDPOINT&#10;default *  Current DOCKER_HOST    unix:///var/run/docker.sock"></textarea>
+        <button class="btn btn-primary" type="button" data-check="context">Diagnose</button>
+      </div>
+
+      <div class="result" id="result-context" hidden></div>
+    </article>
+
+  </section>
+
+  <section class="resources" aria-labelledby="resources-heading">
+    <h2 id="resources-heading">4. Still stuck? Official documentation</h2>
+    <p>If a check above can't be fixed with the suggested command, these are the authoritative references for Pop!_OS and Docker.</p>
+    <ul class="resource-list">
+      <li>
+        <a href="https://support.system76.com/" target="_blank" rel="noopener noreferrer">Pop!_OS / System76 Support Docs</a>
+        <span class="resource-note">General Pop!_OS troubleshooting, drivers and system configuration.</span>
+      </li>
+      <li>
+        <a href="https://docs.docker.com/engine/daemon/" target="_blank" rel="noopener noreferrer">Docker Engine Daemon docs</a>
+        <span class="resource-note">Starting, enabling and configuring the Docker daemon on Linux.</span>
+      </li>
+      <li>
+        <a href="https://docs.docker.com/engine/storage/drivers/overlayfs-driver/" target="_blank" rel="noopener noreferrer">OverlayFS storage driver docs</a>
+        <span class="resource-note">Kernel module requirements for the overlay2 storage driver.</span>
+      </li>
+      <li>
+        <a href="https://docs.docker.com/engine/manage-resources/contexts/" target="_blank" rel="noopener noreferrer">Docker context docs</a>
+        <span class="resource-note">How contexts work and how to switch or reset them.</span>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Made by Eli</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
