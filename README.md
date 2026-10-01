@@ -1,4 +1,4 @@
-# Docker Doctor: Pop!_OS Edition
+# BS | Changes: Test recent changes, including added common errors and prioritized frequent problems.
 
 Docker Doctor is a guided troubleshooting dashboard for Docker on Pop!_OS. You paste the output of a few terminal commands (checking the Docker daemon, kernel modules, and Docker context), and it instantly diagnoses what's wrong with a green/red status dashboard and gives you the exact copy-ready terminal commands to fix each issue, plus links to the official docs for anything left unresolved.
 
